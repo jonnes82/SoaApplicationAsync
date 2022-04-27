@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+     name="BPELAsync"
+     targetNamespace="http://xmlns.oracle.com/ParallelApplication/SoaParallelProj/BPELAsync"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.oracle.com/ParallelApplication/SoaParallelProj/BPELAsync"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://jonnes-V8:7004/soa-infra/services/default/SoaParallelProj!1.0/WSDLs/BPELAsync.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <plnk:partnerLinkType name="BPELAsync">
+        <plnk:role name="BPELAsyncProvider" portType="client:BPELAsync"/>
+        <plnk:role name="BPELAsyncRequester" portType="client:BPELAsyncCallback"/>
+    </plnk:partnerLinkType>
+    <wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+         wsu:Id="wsaddr_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"/>
+    </wsp:Policy>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/ParallelApplication/SoaParallelProj/BPELAsync"
+                 schemaLocation="../Schemas/BPELAsync.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="BPELAsyncRequestMessage">
+        <wsdl:part name="payload" element="client:process"/>
+    </wsdl:message>
+    <wsdl:message name="BPELAsyncResponseMessage">
+        <wsdl:part name="payload" element="client:processResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="BPELAsync">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:BPELAsyncRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="BPELAsyncCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:BPELAsyncResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="BPELAsyncBinding" type="client:BPELAsync">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#wsaddr_policy"
+             wsdl:required="false"/>
+        <wsdl:operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="BPELAsyncCallbackBinding" type="client:BPELAsyncCallback">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="processResponse">
+            <soap:operation style="document" soapAction="processResponse"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.oracle.com/ParallelApplication/SoaParallelProj/BPELAsync"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="bpelasync_client_ep">
+        <wsdl:port name="BPELAsync_pt" binding="client:BPELAsyncBinding">
+            <soap:address location="http://jonnes-V8:7004/soa-infra/services/default/SoaParallelProj!1.0*soa_2a276bc3-4611-47b6-b65f-f4743084d494/bpelasync_client_ep"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

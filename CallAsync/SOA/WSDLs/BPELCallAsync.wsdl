@@ -1,0 +1,32 @@
+<?xml version= '1.0' encoding= 'UTF-8' ?>
+<wsdl:definitions
+     name="BPELCallAsync"
+     targetNamespace="http://xmlns.oracle.com/ParallelApplication/CallAsync/BPELCallAsync"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.oracle.com/ParallelApplication/CallAsync/BPELCallAsync"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:ns1="http://schemas.oracle.com/bpel/extension"
+    >
+    <plnk:partnerLinkType name="BPELCallAsync">
+        <plnk:role name="BPELCallAsyncProvider" portType="client:BPELCallAsync"/>
+    </plnk:partnerLinkType>
+    <wsdl:import namespace="http://schemas.oracle.com/bpel/extension" location="RuntimeFault.wsdl"/>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/ParallelApplication/CallAsync/BPELCallAsync"
+                 schemaLocation="../Schemas/BPELCallAsync.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="BPELCallAsyncRequestMessage">
+        <wsdl:part name="payload" element="client:process"/>
+    </wsdl:message>
+    <wsdl:message name="BPELCallAsyncResponseMessage">
+        <wsdl:part name="payload" element="client:processResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="BPELCallAsync">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:BPELCallAsyncRequestMessage"/>
+            <wsdl:output message="client:BPELCallAsyncResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+</wsdl:definitions>

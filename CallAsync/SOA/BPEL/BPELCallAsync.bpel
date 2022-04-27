@@ -1,0 +1,140 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Apr 27 11:14:42 BRT 2022
+  Author:  jonnes
+  Type: BPEL 2.0 Process
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="BPELCallAsync"
+               targetNamespace="http://xmlns.oracle.com/ParallelApplication/CallAsync/BPELCallAsync"
+               xmlns="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+               xmlns:client="http://xmlns.oracle.com/ParallelApplication/CallAsync/BPELCallAsync"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:ui="http://xmlns.oracle.com/soa/designer"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:ns1="http://xmlns.oracle.com/ParallelApplication/SoaParallelProj/BPELAsync"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions"
+         xmlns:xp20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:ess="http://xmlns.oracle.com/scheduler" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:ns2="http://xmlns.oracle.com/ParallelApplication/SoaParallelAsyncCache/BPELAsyncCache"
+         xmlns:ns3="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync">
+  <import namespace="http://schemas.oracle.com/bpel/extension" location="../WSDLs/RuntimeFault.wsdl"
+          importType="http://schemas.xmlsoap.org/wsdl/"/>
+  <import ui:processWSDL="true" namespace="http://xmlns.oracle.com/ParallelApplication/CallAsync/BPELCallAsync" location="../WSDLs/BPELCallAsync.wsdl" importType="http://schemas.xmlsoap.org/wsdl/"/>
+    <!-- 
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        PARTNERLINKS                                                      
+        List of services participating in this BPEL process               
+      ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="bpelcallasync_client" partnerLinkType="client:BPELCallAsync" myRole="BPELCallAsyncProvider"/>
+    <partnerLink name="AsyncService" partnerLinkType="ns1:BPELAsync" partnerRole="BPELAsyncProvider"
+                 myRole="BPELAsyncRequester"/>
+    <partnerLink name="AsyncCache" partnerLinkType="ns2:BPELAsyncCache" partnerRole="BPELAsyncCacheProvider"
+                 myRole="BPELAsyncCacheRequester"/>
+    <partnerLink name="AsyncSinc" partnerLinkType="ns3:BPELSync" partnerRole="BPELSyncProvider"
+                 myRole="BPELSyncRequester"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:BPELCallAsyncRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:BPELCallAsyncResponseMessage"/>
+    <variable name="Invoke1_process_InputVariable" messageType="ns1:BPELAsyncRequestMessage"/>
+    <variable name="OnMessage_processResponse_InputVariable" messageType="ns1:BPELAsyncResponseMessage"/>
+    <variable name="faultVar" messageType="bpelx:RuntimeFaultMessage"/>
+    <variable name="InvokeAsyncCacheInputVariable" messageType="ns2:BPELAsyncCacheRequestMessage"/>
+    <variable name="OnMessageAsyncCacheRSInputVariable_1" messageType="ns2:BPELAsyncCacheResponseMessage"/>
+    <variable name="InvokeAsyncSyncInputVariable" messageType="ns3:BPELSyncRequestMessage"/>
+    <variable name="OnMessageAsyncSyncRSInputVariable" messageType="ns3:BPELSyncResponseMessage"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in BPELCallAsync.wsdl) -->
+    <receive name="receiveInput" partnerLink="bpelcallasync_client" portType="client:BPELCallAsync" operation="process" variable="inputVariable" createInstance="yes"/>
+    <if name="If1">
+      <condition>$inputVariable.payload/client:input = 'CACHE'</condition>
+      <sequence name="Sequence1">
+        <invoke name="InvokeAsyncCache" partnerLink="AsyncCache" portType="ns2:BPELAsyncCache" operation="process"
+                inputVariable="InvokeAsyncCacheInputVariable" bpelx:invokeAsDetail="no"/>
+        <pick name="Pick1">
+          <onMessage partnerLink="AsyncCache" variable="OnMessageAsyncCacheRSInputVariable_1"
+                     portType="ns2:BPELAsyncCacheCallback" operation="processResponse">
+            <assign name="Assign1">
+              <copy>
+                <from>$OnMessageAsyncCacheRSInputVariable_1.payload/ns2:result</from>
+                <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:result</to>
+              </copy>
+            </assign>
+          </onMessage>
+          <onAlarm>
+            <for>'PT10S'</for>
+            <throw name="Throw1" faultName="bpelx:remoteFault" faultVariable="faultVar"/>
+          </onAlarm>
+        </pick>
+      </sequence>
+      <elseif>
+        <condition>$inputVariable.payload/client:input = 'SYNC'</condition>
+        <sequence name="Sequence2">
+          <invoke name="InvokeAsyncSync" partnerLink="AsyncSinc" portType="ns3:BPELSync" operation="process"
+                  inputVariable="InvokeAsyncSyncInputVariable" bpelx:invokeAsDetail="no"/>
+          <pick name="Pick2">
+            <onMessage partnerLink="AsyncSinc" variable="OnMessageAsyncSyncRSInputVariable"
+                       portType="ns3:BPELSyncCallback" operation="processResponse">
+              <assign name="Assign2">
+                <copy>
+                  <from>$OnMessageAsyncSyncRSInputVariable.payload/ns3:result</from>
+                  <to expressionLanguage="urn:oasis:names:tc:wsbpel:2.0:sublang:xpath1.0">$outputVariable.payload/client:result</to>
+                </copy>
+              </assign>
+            </onMessage>
+            <onAlarm>
+              <for>'PT6S'</for>
+              <throw name="Throw2" faultName="bpelx:remoteFault" faultVariable="faultVar"/>
+            </onAlarm>
+          </pick>
+        </sequence>
+      </elseif>
+      <else>
+        <invoke name="InvokeAsyncPersist" partnerLink="AsyncService" portType="ns1:BPELAsync" operation="process"
+                inputVariable="Invoke1_process_InputVariable" bpelx:invokeAsDetail="no"/>
+      </else>
+    </if>
+    <!-- Generate reply to synchronous request -->
+    <reply name="replyOutput" partnerLink="bpelcallasync_client" portType="client:BPELCallAsync" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>

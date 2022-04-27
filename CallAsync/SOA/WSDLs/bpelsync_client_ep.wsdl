@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+     name="BPELSync"
+     targetNamespace="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync"
+     xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+     xmlns:client="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync"
+     xmlns:plnk="http://docs.oasis-open.org/wsbpel/2.0/plnktype"
+     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    >
+    <wsdl:documentation>
+        <abstractWSDL>http://jonnes-V8:7004/soa-infra/services/default/SoaParallelSync!1.0/WSDLs/BPELSync.wsdl</abstractWSDL>
+    </wsdl:documentation>
+    <plnk:partnerLinkType name="BPELSync">
+        <plnk:role name="BPELSyncRequester" portType="client:BPELSyncCallback"/>
+        <plnk:role name="BPELSyncProvider" portType="client:BPELSync"/>
+    </plnk:partnerLinkType>
+    <wsp:Policy xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+         wsu:Id="wsaddr_policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+        <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl"/>
+    </wsp:Policy>
+    <wsdl:types>
+        <schema xmlns="http://www.w3.org/2001/XMLSchema">
+            <import namespace="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync"
+                 schemaLocation="../Schemas/BPELSync.xsd"/>
+        </schema>
+    </wsdl:types>
+    <wsdl:message name="BPELSyncRequestMessage">
+        <wsdl:part name="payload" element="client:process"/>
+    </wsdl:message>
+    <wsdl:message name="BPELSyncResponseMessage">
+        <wsdl:part name="payload" element="client:processResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="BPELSync">
+        <wsdl:operation name="process">
+            <wsdl:input message="client:BPELSyncRequestMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:portType name="BPELSyncCallback">
+        <wsdl:operation name="processResponse">
+            <wsdl:input message="client:BPELSyncResponseMessage"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="BPELSyncBinding" type="client:BPELSync">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsp:PolicyReference xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" URI="#wsaddr_policy"
+             wsdl:required="false"/>
+        <wsdl:operation name="process">
+            <soap:operation style="document" soapAction="process"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="BPELSyncCallbackBinding" type="client:BPELSyncCallback">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="processResponse">
+            <soap:operation style="document" soapAction="processResponse"/>
+            <wsdl:input>
+                <soap:body use="literal" namespace="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync"/>
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="bpelsync_client_ep">
+        <wsdl:port name="BPELSync_pt" binding="client:BPELSyncBinding">
+            <soap:address location="http://jonnes-V8:7004/soa-infra/services/default/SoaParallelSync!1.0*soa_e27029cc-044d-4cf5-82e2-2785e8559da0/bpelsync_client_ep"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
