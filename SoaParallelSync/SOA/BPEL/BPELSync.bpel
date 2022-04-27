@@ -69,6 +69,9 @@
         <!-- Receive input from requestor. (Note: This maps to operation defined in BPELSync.wsdl) -->
         <receive name="receiveInput" partnerLink="bpelsync_client" portType="client:BPELSync" operation="process" variable="inputVariable" createInstance="yes"/>
         <wait name="Wait1">
+            <documentation>
+                <![CDATA[Assign with the kind of transaction]]>
+            </documentation>
             <for>'PT5S'</for>
         </wait>
         <assign name="Assign1">

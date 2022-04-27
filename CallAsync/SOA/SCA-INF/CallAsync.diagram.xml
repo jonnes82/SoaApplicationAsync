@@ -15,11 +15,11 @@
         </dgm:operations>
     </dgm:gService>
     <dgm:gReference name="AsyncService">
-        <dgm:body borderWidth="2" arcRad="20" X="439" Y="26" width="136" height="96">
+        <dgm:body borderWidth="2" arcRad="20" X="946" Y="26" width="136" height="96">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="429" Y="19" width="156" height="110">
+        <dgm:shadow arcRad="20" X="936" Y="19" width="156" height="110">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="AsyncService" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/ParallelApplication/SoaParallelProj/BPELAsync#wsdl.interface(BPELAsync)" callbackInterface="http://xmlns.oracle.com/ParallelApplication/SoaParallelProj/BPELAsync#wsdl.interface(BPELAsyncCallback)"/>
@@ -30,11 +30,11 @@
         </dgm:operations>
     </dgm:gReference>
     <dgm:gReference name="AsyncCache">
-        <dgm:body borderWidth="2" arcRad="20" X="439" Y="156" width="136" height="96">
+        <dgm:body borderWidth="2" arcRad="20" X="946" Y="156" width="136" height="96">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="429" Y="149" width="156" height="110">
+        <dgm:shadow arcRad="20" X="936" Y="149" width="156" height="110">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="AsyncCache" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/ParallelApplication/SoaParallelAsyncCache/BPELAsyncCache#wsdl.interface(BPELAsyncCache)" callbackInterface="http://xmlns.oracle.com/ParallelApplication/SoaParallelAsyncCache/BPELAsyncCache#wsdl.interface(BPELAsyncCacheCallback)"/>
@@ -45,11 +45,11 @@
         </dgm:operations>
     </dgm:gReference>
     <dgm:gReference name="AsyncSinc">
-        <dgm:body borderWidth="2" arcRad="20" X="439" Y="286" width="136" height="96">
+        <dgm:body borderWidth="2" arcRad="20" X="946" Y="286" width="136" height="96">
             <dgm:borderColor r="153" g="153" b="153"/>
             <dgm:bgColor r="255" g="255" b="255"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="429" Y="279" width="156" height="110">
+        <dgm:shadow arcRad="20" X="936" Y="279" width="156" height="110">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="AsyncSinc" X="-10" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync#wsdl.interface(BPELSync)" callbackInterface="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync#wsdl.interface(BPELSyncCallback)"/>
@@ -60,12 +60,12 @@
         </dgm:operations>
     </dgm:gReference>
     <dgm:gComponent name="BPELCallAsync">
-        <dgm:body borderWidth="2" arcRad="20" X="226" Y="148" width="130" height="111">
+        <dgm:body borderWidth="2" arcRad="20" X="487" Y="148" width="130" height="111">
             <dgm:borderColor r="69" g="113" b="140"/>
             <dgm:lightBgColor r="166" g="208" b="230"/>
             <dgm:darkBgColor r="99" g="162" b="201"/>
         </dgm:body>
-        <dgm:shadow arcRad="20" X="216" Y="141" width="150" height="127">
+        <dgm:shadow arcRad="20" X="477" Y="141" width="150" height="127">
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:inputPort name="bpelcallasync_client" X="-10" Y="15" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/ParallelApplication/CallAsync/BPELCallAsync#wsdl.interface(BPELCallAsync)"/>
@@ -75,28 +75,28 @@
         <dgm:nodeIcon URI="/oracle/tip/tools/ide/bpel/shared/plugins/resources/images/soa/process_20x20.png" X="10" Y="4" width="20" height="20"/>
     </dgm:gComponent>
     <dgm:gWireLink source="bpelcallasync_client_ep" target="BPELCallAsync/bpelcallasync_client" width="2">
-        <dgm:gSegment X1="168" Y1="173" X2="216" Y2="173"/>
+        <dgm:gSegment X1="168" Y1="173" X2="477" Y2="173"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="BPELCallAsync/AsyncService" target="AsyncService" width="2">
-        <dgm:gSegment X1="366" Y1="173" X2="390" Y2="173"/>
-        <dgm:gSegment X1="390" Y1="173" X2="390" Y2="36"/>
-        <dgm:gSegment X1="390" Y1="36" X2="429" Y2="36"/>
+        <dgm:gSegment X1="627" Y1="173" X2="651" Y2="173"/>
+        <dgm:gSegment X1="651" Y1="173" X2="651" Y2="36"/>
+        <dgm:gSegment X1="651" Y1="36" X2="936" Y2="36"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="BPELCallAsync/AsyncCache" target="AsyncCache" width="2">
-        <dgm:gSegment X1="366" Y1="198" X2="405" Y2="198"/>
-        <dgm:gSegment X1="405" Y1="198" X2="405" Y2="166"/>
-        <dgm:gSegment X1="405" Y1="166" X2="429" Y2="166"/>
+        <dgm:gSegment X1="627" Y1="198" X2="666" Y2="198"/>
+        <dgm:gSegment X1="666" Y1="198" X2="666" Y2="166"/>
+        <dgm:gSegment X1="666" Y1="166" X2="936" Y2="166"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>
     <dgm:gWireLink source="BPELCallAsync/AsyncSinc" target="AsyncSinc" width="2">
-        <dgm:gSegment X1="366" Y1="223" X2="390" Y2="223"/>
-        <dgm:gSegment X1="390" Y1="223" X2="390" Y2="296"/>
-        <dgm:gSegment X1="390" Y1="296" X2="429" Y2="296"/>
+        <dgm:gSegment X1="627" Y1="223" X2="651" Y2="223"/>
+        <dgm:gSegment X1="651" Y1="223" X2="651" Y2="296"/>
+        <dgm:gSegment X1="651" Y1="296" X2="936" Y2="296"/>
         <dgm:baseColor r="153" g="153" b="153"/>
         <dgm:selectedColor r="49" g="106" b="196"/>
     </dgm:gWireLink>

@@ -9,7 +9,7 @@
             <dgm:bgColor r="196" g="228" b="240"/>
         </dgm:shadow>
         <dgm:outputPort name="bpelsync_client_ep" X="127" Y="0" diameter="20" imageURI="oracle/tip/tools/ide/fabric/resource/image/visuals_rd1/servicereference.png" interface="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync#wsdl.interface(BPELSync)" callbackInterface="http://xmlns.oracle.com/ParallelApplication/SoaParallelSync/BPELSync#wsdl.interface(BPELSyncCallback)"/>
-        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/soap_service_20x20.png" X="20" Y="4" width="20" height="20"/>
+        <dgm:nodeIcon URI="/oracle/tip/tools/ide/adapters/designtime/adapter/images/mft_adapter_20x20.png" X="20" Y="4" width="20" height="20"/>
         <dgm:operations>
             <dgm:item>process</dgm:item>
             <dgm:item>processResponse</dgm:item>
